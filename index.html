@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CRPT v1.0</title>
+    <meta name="description" content="Web interface for real-time market data monitoring, signal feeds, local climate diagnostics with hacker vibes.">
+    <meta name="author" content="rx76d">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="crt-overlay"></div>
+    <div id="hud-top">
+        <div>[SYSTEM: ONLINE] // CRPT_v1.0</div>
+        <div id="clock">00:00:00</div>
+        <div>DATA_RECV: <span id="load-val">0.00 KB</span></div>
+    </div>
+    <div id="viewport">
+        <div id="world">
+            <svg id="cables-svg"></svg>
+        </div>
+    </div>
+    <div id="toolbar">
+        <button class="tool-btn" onclick="Core.spawn('market')">+ MARKET</button>
+        <button class="tool-btn" onclick="Core.spawn('signal')">+ SIGNAL</button>
+        <button class="tool-btn" onclick="Core.spawn('weather')">+ WEATHER</button>
+        <button class="tool-btn" onclick="Core.spawn('terminal')">+ TERM</button>
+        <button class="tool-btn" onclick="Core.saveLayout()" style="border-color: #ff00ff; color: #ff00ff;">SAVE_CONFIG</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
