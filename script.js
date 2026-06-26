@@ -77,7 +77,7 @@ const Core = {
     },
 
     spawn(type, x, y, data = null) {
-        const id = 'n' + Date.now();
+        const id = 'n_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
         const node = new Node(id, type, x !== undefined ? x : 400, y !== undefined ? y : 400, data);
         this.state.nodes.push(node);
         node.init();
@@ -103,8 +103,9 @@ const Core = {
     saveLayout() {
         const data = this.state.nodes.map(n => {
             const el = document.getElementById(n.id);
+            if (!el) return null;
             return { type: n.type, x: el.offsetLeft, y: el.offsetTop, data: n.data };
-        });
+        }).filter(Boolean);
         localStorage.setItem('nc_config', JSON.stringify(data));
         alert("CONFIG_SAVED");
     },
@@ -137,7 +138,7 @@ class Node {
         el.innerHTML = `
             <div class="node-header">
                 <span>[${this.type.toUpperCase()}_v1.0]</span>
-                <span style="cursor:pointer" onclick="document.getElementById('${this.id}').remove()">[X]</span>
+                <span style="cursor:pointer" onclick="this.closest('.node').instance.destroy()">[X]</span>
             </div>
             <div class="node-content" id="c_${this.id}">INITIATING...</div>
         `;
@@ -145,6 +146,13 @@ class Node {
         el.instance = this;
         this.makeDraggable(el);
         this.loadContent();
+    }
+
+    destroy() {
+        const el = document.getElementById(this.id);
+        if (el) el.remove();
+        Core.state.nodes = Core.state.nodes.filter(n => n.id !== this.id);
+        Core.updateCables();
     }
 
     makeDraggable(el) {
