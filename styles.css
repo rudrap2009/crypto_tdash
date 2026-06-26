@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght=500;700&display=swap');
+
+:root {
+    --neon: #00ff41;
+    --neon-bg: rgba(0, 255, 65, 0.15);
+    --bg-dark: #000000;
+    --border: #003300;
+    --font-main: 'Fira Code', monospace;
+    --grid-size: 40px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+    border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--neon);
+    box-shadow: 0 0 5px var(--neon);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon) var(--bg-dark);
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    color: var(--neon);
+    font-family: var(--font-main);
+    overflow: hidden;
+    touch-action: none;
+}
+
+#crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    z-index: 10000;
+    pointer-events: none;
+    background-size: 100% 2px, 2px 100%;
+}
+
+#viewport {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+}
+
+#world {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    transform-origin: 0 0;
+}
+
+#hud-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px 20px;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    border-bottom: 1px solid var(--neon);
+    text-shadow: 0 0 5px var(--neon);
+}
+
+.node {
+    position: absolute;
+    background: var(--bg-dark);
+    border: 1px solid var(--neon);
+    width: 320px;
+    z-index: 10;
+    box-shadow: 0 0 15px var(--neon-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.node-header {
+    background: var(--neon);
+    color: #000;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+}
+
+.node-content {
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--neon);
+    overflow-y: auto;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+}
+
+.data-label {
+    color: var(--neon);
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.data-value {
+    color: #fff;
+    text-shadow: 0 0 8px var(--neon);
+}
+
+#toolbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 5000;
+    background: #000;
+    padding: 10px;
+    border: 1px solid var(--neon);
+}
+
+.tool-btn {
+    background: transparent;
+    border: 1px solid var(--neon);
+    color: var(--neon);
+    padding: 5px 15px;
+    font-family: inherit;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.tool-btn:hover {
+    background: var(--neon);
+    color: #000;
+}
+
+#cables-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5000px;
+    height: 5000px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.cable {
+    fill: none;
+    stroke: var(--neon);
+    stroke-width: 1;
+    stroke-dasharray: 4;
+    opacity: 0.3;
+}
+
+input[type="text"] {
+    background: #001100;
+    border: 1px solid var(--neon);
+    color: var(--neon);
+    padding: 4px;
+    width: 100%;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: 5px;
+}
+
+.terminal-out {
+    height: 150px;
+    background: #000;
+    border: 1px solid var(--border);
+    overflow-y: scroll;
+    padding: 5px;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.traffic-flash {
+    animation: flash 0.3s ease-out;
+}
+
+@keyframes flash {
+    0% {
+        color: #fff;
+        text-shadow: 0 0 15px #fff;
+    }
+    100% {
+        color: var(--neon);
+    }
+}
+
+.data-row.interactive {
+    cursor: pointer;
+    transition: background-color 0.2s, text-shadow 0.2s;
+}
+
+.data-row.interactive:hover {
+    background-color: var(--neon-bg);
+    text-shadow: 0 0 8px var(--neon);
+}
+
+.trend-up {
+    color: #00ff41;
+}
+
+.trend-down {
+    color: #ff3366;
+    text-shadow: 0 0 8px rgba(255, 51, 102, 0.4);
+}
+
+.chart-container {
+    margin-top: 10px;
+    background: #050505;
+    border: 1px solid var(--border);
+    position: relative;
+    padding: 5px;
+}
+
+.chart-back-btn {
+    display: inline-block;
+    color: var(--neon);
+    background: transparent;
+    border: 1px solid var(--neon);
+    padding: 2px 8px;
+    font-size: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    margin-bottom: 8px;
+    text-shadow: 0 0 5px var(--neon);
+}
+
+.chart-back-btn:hover {
+    background: var(--neon);
+    color: #000;
+}
+
+.chart-stats {
+    font-size: 11px;
+    margin-top: 8px;
+}
+
